@@ -85,6 +85,7 @@ def backward_propagation(X, Y, cache):
     m = X.shape[1]
     (z1, a1, W1, b1, z2, a2, W2, b2, z3, a3, W3, b3) = cache
     
+    
     dz3 = 1./m * (a3 - Y)
     dW3 = np.dot(dz3, a2.T)
     db3 = np.sum(dz3, axis=1, keepdims = True)
@@ -148,22 +149,23 @@ def compute_loss(a3, Y):
     return loss
 
 def load_cat_dataset():
+    # 读取训练集
     train_dataset = h5py.File('datasets/train_catvnoncat.h5', "r")
     train_set_x_orig = np.array(train_dataset["train_set_x"][:]) # your train set features
     train_set_y_orig = np.array(train_dataset["train_set_y"][:]) # your train set labels
-
+    # 读取测试集
     test_dataset = h5py.File('datasets/test_catvnoncat.h5', "r")
     test_set_x_orig = np.array(test_dataset["test_set_x"][:]) # your test set features
     test_set_y_orig = np.array(test_dataset["test_set_y"][:]) # your test set labels
-
+    # 读取类别
     classes = np.array(test_dataset["list_classes"][:]) # the list of classes
-    
+    # 形状重构
     train_set_y = train_set_y_orig.reshape((1, train_set_y_orig.shape[0]))
     test_set_y = test_set_y_orig.reshape((1, test_set_y_orig.shape[0]))
     
     train_set_x_orig = train_set_x_orig.reshape(train_set_x_orig.shape[0], -1).T
     test_set_x_orig = test_set_x_orig.reshape(test_set_x_orig.shape[0], -1).T
-    
+    # 数据归一化
     train_set_x = train_set_x_orig/255
     test_set_x = test_set_x_orig/255
 
@@ -206,8 +208,11 @@ def plot_decision_boundary(model, X, y):
     y_min, y_max = X[1, :].min() - 1, X[1, :].max() + 1
     h = 0.01
     # Generate a grid of points with distance h between them
+    # 生成网格点坐标矩阵
     xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
     # Predict the function value for the whole grid
+    # ravel 变成一维向量
+    # np.c_ 将矩阵进行左右连接
     Z = model(np.c_[xx.ravel(), yy.ravel()])
     Z = Z.reshape(xx.shape)
     # Plot the contour and training examples
@@ -236,6 +241,7 @@ def predict_dec(parameters, X):
 
 def load_dataset():
     np.random.seed(1)
+    # 生成数据
     train_X, train_Y = sklearn.datasets.make_circles(n_samples=300, noise=.05)
     np.random.seed(2)
     test_X, test_Y = sklearn.datasets.make_circles(n_samples=100, noise=.05)
