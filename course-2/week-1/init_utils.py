@@ -213,13 +213,15 @@ def plot_decision_boundary(model, X, y):
     # Predict the function value for the whole grid
     # ravel 变成一维向量
     # np.c_ 将矩阵进行左右连接
+    # model 是形参里的model
+    # 在initialion 中指的是 predict_dec(parameters, x.T)
     Z = model(np.c_[xx.ravel(), yy.ravel()])
     Z = Z.reshape(xx.shape)
     # Plot the contour and training examples
     plt.contourf(xx, yy, Z, cmap=plt.cm.Spectral)
     plt.ylabel('x2')
     plt.xlabel('x1')
-    plt.scatter(X[0, :], X[1, :], c=y, cmap=plt.cm.Spectral)
+    plt.scatter(X[0, :], X[1, :], c=np.squeeze(y), cmap=plt.cm.Spectral)
     plt.show()
     
 def predict_dec(parameters, X):
