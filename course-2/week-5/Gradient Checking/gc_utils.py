@@ -36,8 +36,12 @@ def dictionary_to_vector(parameters):
     for key in ["W1", "b1", "W2", "b2", "W3", "b3"]:
         
         # flatten parameter
-        new_vector = np.reshape(parameters[key], (-1,1))
-        keys = keys + [key]*new_vector.shape[0]
+        new_vector = np.reshape(parameters[key], (-1,1))   #变为多行一列的新向量
+        print("parameters[key].shape:",parameters[key].shape)
+        print("new_vector:",new_vector.shape)
+        print("[key]:",[key])
+        keys = keys + [key]* new_vector.shape[0]    # 加号后半段是列表的连接操作，
+        print("keys:",keys)
         
         if count == 0:
             theta = new_vector
@@ -47,6 +51,7 @@ def dictionary_to_vector(parameters):
 
     return theta, keys
 
+# 该方法不具备通用性
 def vector_to_dictionary(theta):
     """
     Unroll all our parameters dictionary from a single vector satisfying our specific required shape.
@@ -61,11 +66,12 @@ def vector_to_dictionary(theta):
 
     return parameters
 
+# 该方法亦不具备通用性
 def gradients_to_vector(gradients):
     """
     Roll all our gradients dictionary into a single vector satisfying our specific required shape.
     """
-    
+   
     count = 0
     for key in ["dW1", "db1", "dW2", "db2", "dW3", "db3"]:
         # flatten parameter
